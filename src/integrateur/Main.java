@@ -22,11 +22,12 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception{
 
-		//new Main();
 		
-	    Serial main = new Serial();
+		
+	    /*Serial main = new Serial();
 	    main.definePort();
-	    main.initialize();
+	    main.initialize();*/
+	    new Main();
 	    Thread t=new Thread() {
 	        public void run() {
 	            //the following line will keep this app alive for 1000    seconds,
