@@ -36,7 +36,7 @@ public class Main {
 	        }
 	    };
 	    t.start();
-	    System.out.println("L'écoute du port a commencé");
+	    //System.out.println("L'écoute du port a commencé");
 	}
 
 

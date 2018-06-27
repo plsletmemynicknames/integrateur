@@ -19,7 +19,10 @@ public class Serial implements SerialPortEventListener {
 	private OutputStream output;
 	private static final int TIME_OUT = 2000;
 	private static final int DATA_RATE = 9600;
-	private String value = "1";
+	private String position = "20";
+	private String pointA = "20";
+	private String pointB = "20";
+	private String distance = "20";
 	SerialPort serialPort;
 	    /** The port we're normally going to use. */
 	private static String PORT_NAMES[] = {"/dev/tty.usbserial-A9007UX1", // Mac OS X
@@ -58,8 +61,8 @@ public class Serial implements SerialPortEventListener {
 	}
 
 	
-	public String getValue() {
-		return this.value;
+	public String getPosition() {
+		return this.position;
 	}
 	
 	
@@ -119,14 +122,19 @@ public class Serial implements SerialPortEventListener {
 	            String inputLine=null;
 	            if (input.ready()) {
 	                inputLine = input.readLine();
+	                String temp = "Position";
+	                String [] chunks = inputLine.split(";");
+	                //System.out.println(chunks[0] + " " + chunks[1]);
+	                System.out.println(chunks[0]);
+	                System.out.println(temp);
 	                
-	                String [] chunks = inputLine.split(": ");
-	// Display each Serial.print from Arduino 
-	                //System.out.println(chunks[0] + "\t" + chunks[1]);
-	                value = chunks[1];
-	                System.out.println(value);
-	                pan.paint();
-	                //System.out.println(chunks[1]);
+	                if (chunks[0] == temp) {
+		                position = chunks[1];
+		                System.out.println(position);
+		                pan.paint();
+	                }else {
+	                	System.out.println("prout");
+	                }
 	            }
 	
 	        } catch (Exception e) {
