@@ -1,12 +1,19 @@
 package integrateur;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 public class Main {
 	
+	JFrame f;
+	Panneau pan;
+	Dimension dimension;
+
+
 	Main(){ 
-		JFrame f = new JFrame("interface");
-		Panneau pan = new Panneau();
+		f = new JFrame("Informations ACAR");
+		pan = new Panneau(this);
 		f.getContentPane().add(pan);
 		//pan.paintComponent();
 		
@@ -14,10 +21,8 @@ public class Main {
 		//setting grid layout of 3 rows and 3 columns  
 		f.setSize(700,560);  
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
-		f.setVisible(true); 
-	}
-	
-	
+		f.setVisible(true);
+	}	
 	
 	
 	public static void main(String[] args) throws Exception{

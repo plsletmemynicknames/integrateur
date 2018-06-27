@@ -7,7 +7,9 @@ import java.io.OutputStream;
 import gnu.io.CommPortIdentifier; 
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent; 
-import gnu.io.SerialPortEventListener; 
+import gnu.io.SerialPortEventListener;
+
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 
@@ -20,9 +22,8 @@ public class Serial implements SerialPortEventListener {
 	private static final int TIME_OUT = 2000;
 	private static final int DATA_RATE = 9600;
 	private String position = "20";
-	private String pointA = "20";
-	private String pointB = "20";
-	private String distance = "20";
+	private boolean finish = false;
+	private ArrayList<Place> Places = new ArrayList<Place>();
 	SerialPort serialPort;
 	    /** The port we're normally going to use. */
 	private static String PORT_NAMES[] = {"/dev/tty.usbserial-A9007UX1", // Mac OS X
@@ -34,8 +35,6 @@ public class Serial implements SerialPortEventListener {
 	public Serial(Panneau pan) {
 		this.pan = pan;
 	}
-	
-	
 	
 	public void definePort() {
 		
@@ -63,6 +62,14 @@ public class Serial implements SerialPortEventListener {
 	
 	public String getPosition() {
 		return this.position;
+	}
+	
+	public boolean getFinish() {
+		return this.finish;
+	}
+	
+	public ArrayList<Place> getPlaces() {
+		return this.Places;
 	}
 	
 	
@@ -122,18 +129,17 @@ public class Serial implements SerialPortEventListener {
 	            String inputLine=null;
 	            if (input.ready()) {
 	                inputLine = input.readLine();
-	                String temp = "Position";
 	                String [] chunks = inputLine.split(";");
-	                //System.out.println(chunks[0] + " " + chunks[1]);
-	                System.out.println(chunks[0]);
-	                System.out.println(temp);
 	                
-	                if (chunks[0] == temp) {
-		                position = chunks[1];
-		                System.out.println(position);
+	                //System.out.println(chunks[0]);
+	                
+	                if (chunks[0].contains("tio")) {
+		                this.position = chunks[1];
 		                pan.paint();
-	                }else {
-	                	System.out.println("prout");
+	                }else if (chunks[0].contains("lac")){
+	                	this.finish = true;
+	                	this.Places.add(new Place(chunks[2], chunks[3], chunks[1]));
+	                	pan.paint();
 	                }
 	            }
 	

@@ -2,12 +2,16 @@ package integrateur;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 	
 public class Panneau extends JPanel {
 	Serial serial;
+	Main main;
+	
 	private static final long serialVersionUID = 2273950183076632054L;
 	
 	String tab[][]  = { 
@@ -27,13 +31,14 @@ public class Panneau extends JPanel {
 };
 		
 
-    public Panneau() {
+    public Panneau(Main main) {
         super();
         setOpaque(false); // we don't paint all our bits
         setLayout(new BorderLayout());
         this.serial  = new Serial(this);
         serial.definePort();
         serial.initialize();
+        this.main = main;
         try {
 			paint();
 		} catch (InterruptedException e) {
@@ -70,77 +75,90 @@ public class Panneau extends JPanel {
 	            g.fillRect(y*40, x*40, 40, 40);
 	        }
 	    }
-	    //System.out.println("paintComponent :" + serial.getPosition());
-	    switch(serial.getPosition()) {
-	    case "1" :
-	    	X = 6;
-	    	Y = 12;
-	    	break;
-	    case "2":
-	    	X = 16;
-	    	Y = 12;
-	    	break;
-	    case "3" :
-	    	X = 16;
-	    	Y = 8;
-	    	break;
-	    case "4":
-	    	X = 16;
-	    	Y = 0;
-	    	break;
-	    case "5" :
-	    	X = 14;
-	    	Y = 0;
-	    	break;
-	    case "6":
-	    	X = 10;
-	    	Y = 0;
-	    	break;
-	    case "7" :
-	    	X = 4;
-	    	Y = 0;
-	    	break;
-	    case "8":
-	    	X = 0;
-	    	Y = 0;
-	    	break;
-	    case "9" :
-	    	X = 0;
-	    	Y = 4;
-	    	break;
-	    case "10":
-	    	X = 0;
-	    	Y = 8;
-	    	break;
-	    case "11" :
-	    	X = 0;
-	    	Y = 12;
-	    	break;
-	    case "12":
-	    	X = 6;
-	    	Y = 10;
-	    	break;
-	    case "13" :
-	    	X = 14;
-	    	Y = 10;
-	    	break;
-	    case "14":
-	    	X = 14;
-	    	Y = 8;
-	    	break;
-	    case "15" :
-	    	X = 10;
-	    	Y = 4;
-	    	break;
-	    case "16":
-	    	X = 4;
-	    	Y = 4;
-	    	break;
-	    case "20":
-	    	X = 100;
-	    	Y = 100;
+	    if (serial.getFinish() == false) {
+	    	switch(serial.getPosition()) {
+		    case "1" :
+		    	X = 6;
+		    	Y = 12;
+		    	break;
+		    case "2":
+		    	X = 16;
+		    	Y = 12;
+		    	break;
+		    case "3" :
+		    	X = 16;
+		    	Y = 8;
+		    	break;
+		    case "4":
+		    	X = 16;
+		    	Y = 0;
+		    	break;
+		    case "5" :
+		    	X = 14;
+		    	Y = 0;
+		    	break;
+		    case "6":
+		    	X = 10;
+		    	Y = 0;
+		    	break;
+		    case "7" :
+		    	X = 4;
+		    	Y = 0;
+		    	break;
+		    case "8":
+		    	X = 0;
+		    	Y = 0;
+		    	break;
+		    case "9" :
+		    	X = 0;
+		    	Y = 4;
+		    	break;
+		    case "10":
+		    	X = 0;
+		    	Y = 8;
+		    	break;
+		    case "11" :
+		    	X = 0;
+		    	Y = 12;
+		    	break;
+		    case "12":
+		    	X = 6;
+		    	Y = 10;
+		    	break;
+		    case "13" :
+		    	X = 14;
+		    	Y = 10;
+		    	break;
+		    case "14":
+		    	X = 14;
+		    	Y = 8;
+		    	break;
+		    case "15" :
+		    	X = 10;
+		    	Y = 4;
+		    	break;
+		    case "16":
+		    	X = 4;
+		    	Y = 4;
+		    	break;
+		    case "20":
+		    	X = 100;
+		    	Y = 100;
+		    }
+		    g.setColor(Color.red);
+			g.fillRect(X*40, Y*40, 40, 40);
 	    }
-	    g.setColor(Color.red);
-		g.fillRect(X*40, Y*40, 40, 40);
+	    else {
+	    	X = 0;
+	    	for (Place p: serial.getPlaces()) {
+	    		//System.out.println("La place entre les points " + p.PointA + " et " + p.PointB + " mesure : " + p.Distance + " cm");
+	    		X++;
+	    		Font font = new Font("Serif", Font.PLAIN, 18);
+	            g.setFont(font);
+	    		g.drawString("La place entre les points " + p.PointA + " et " + p.PointB + " mesure : " + p.Distance + " cm.",50,520 + X * 20); 
+	    	}
+	    	main.f.setSize(700, 800);
+	    }
+	    
 	}
 }
